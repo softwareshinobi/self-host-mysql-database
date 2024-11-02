@@ -1,0 +1,58 @@
+
+services:
+
+##########################################
+##
+## relational data
+##
+##########################################
+
+    mysql-database-server:
+
+        container_name: mysql-database-server
+
+        image: mysql:5.7
+
+        restart: unless-stopped
+
+        ports:
+
+            - "3306:3306"
+
+        volumes:
+
+            - /volumes/database:/var/lib/mysql
+                     
+        environment:
+
+            MYSQL_ROOT_PASSWORD: aggiepride
+
+            MYSQL_DATABASE: shinobi
+
+            MYSQL_USER: shinobi
+
+            MYSQL_PASSWORD: shinobi
+ 
+    mysql-database-admin:
+
+        container_name: mysql-database-admin
+
+        image: beeyev/phpmyadmin-lightweight
+
+        restart: unless-stopped
+
+        depends_on:
+
+           - mysql-database-server
+
+        links:
+
+           - mysql-database-server
+
+        ports:
+
+            - "3380:80"
+
+        environment:
+
+            PMA_HOST: mysql-database-server
